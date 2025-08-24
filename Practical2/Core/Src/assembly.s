@@ -36,6 +36,10 @@ ASM_Main:
 main_loop:
 	LDR		R3, [R0, #0X10]       	@ Load IDR
 
+	MOVS	R4, #3
+	TST		R3, R4           		@ Checks if pb0 and pb1 is pressed
+	BEQ		pa01_pressed          	@ brunch since PB0 and PB1 is pressed
+
 	MOVS	R4, #1
 	TST		R3, R4           		@ Checks if pb0 is pressed
 	BEQ		pa0_pressed          	@ brunch since PB0 is pressed
@@ -62,6 +66,11 @@ long_delay:
     BNE 	long_delay            	@ If not zero, keep looping
     B		write_leds
 
+short_delay:
+	SUBS 	R4, R4, #1           	@ R3 = R3 - 1, updates flags
+    BNE 	short_delay            	@ If not zero, keep looping
+    B		write_leds
+
 write_leds:
 	MOVS 	R5, #0xFF         		@ Load mask into R5
 	ANDS 	R2, R2, R5        		@ keep only PB0..PB7 by using the 0xFF mask instead of incrementing through out the whole width of ODR
@@ -75,6 +84,16 @@ pa0_pressed:
 	B 		long_delay
 
 pa1_pressed:
+	ADDS 	R2, R2, #1				@ Increment the pattern
+	LDR 	R4, =SHORT_DELAY_CNT   	@ Load address of the constant
+    LDR 	R4, [R4]              	@ Load actual value into R3
+	B 		short_delay
+
+pa01_pressed:
+	ADDS 	R2, R2, #2				@ Increment the pattern
+	LDR 	R4, =SHORT_DELAY_CNT   	@ Load address of the constant
+    LDR 	R4, [R4]              	@ Load actual value into R3
+	B 		short_delay
 
 pa2_pressed:
 
