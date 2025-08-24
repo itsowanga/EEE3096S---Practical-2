@@ -52,6 +52,7 @@ main_loop:
 	TST 	R3, R4           		@ Checks if pb3 is pressed
 	BEQ  	pa3_pressed          	@ brunch since PB3 is pressed
 
+	ADDS 	R2, R2, #1				@ Increment the pattern
 	LDR 	R4, =LONG_DELAY_CNT   	@ Load address of the constant
     LDR 	R4, [R4]              	@ Load actual value into R3
 	B 		long_delay
@@ -62,7 +63,6 @@ long_delay:
     B		write_leds
 
 write_leds:
-	ADDS 	R2, R2, #1
 	MOVS 	R5, #0xFF         		@ Load mask into R5
 	ANDS 	R2, R2, R5        		@ keep only PB0..PB7 by using the 0xFF mask instead of incrementing through out the whole width of ODR
 	STR 	R2, [R1, #0x14]
