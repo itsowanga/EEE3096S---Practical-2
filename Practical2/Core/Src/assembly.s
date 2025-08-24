@@ -33,10 +33,60 @@ ASM_Main:
 	MOVS R2, #0         	@ NOTE: R2 will be dedicated to holding the value on the LEDs
 
 @ TODO: Add code, labels and logic for button checks and LED patternsz
-
 main_loop:
+	LDR		R3, [R0, #0X10]       	@ Load IDR
+
+	MOVS	R4, #1
+	TST		R3, R4           		@ Checks if pb0 is pressed
+	BEQ		pa0_pressed          	@ brunch since PB0 is pressed
+
+	MOVS	R4, #2
+	TST		R3, R4           		@ Checks if pb1 is pressed
+	BEQ		pa1_pressed          	@ brunch since PB1 is pressed
+
+	MOVS	R4, #4
+	TST		R3, R4           		@ Checks if pb2 is pressed
+	BEQ  	pa2_pressed          	@ brunch since PB2 is pressed
+
+	MOVS	R4, #8
+	TST 	R3, R4           		@ Checks if pb3 is pressed
+	BEQ  	pa3_pressed          	@ brunch since PB3 is pressed
+
+	LDR 	R4, =LONG_DELAY_CNT   	@ Load address of the constant
+    LDR 	R4, [R4]              	@ Load actual value into R3
+	B 		long_delay
+
+long_delay:
+	SUBS 	R4, R4, #1           	@ R3 = R3 - 1, updates flags
+    BNE 	long_delay            	@ If not zero, keep looping
+    B		write_leds
+
+write_leds:
+	ADDS 	R2, R2, #1
+	MOVS 	R5, #0xFF         		@ Load mask into R5
+	ANDS 	R2, R2, R5        		@ keep only PB0..PB7 by using the 0xFF mask instead of incrementing through out the whole width of ODR
+	STR 	R2, [R1, #0x14]
+	B 		main_loop
+
+pa0_pressed:
+
+pa1_pressed:
+
+pa2_pressed:
+
+pa3_pressed:
+
+
+
+/*main_loop:
 		LDR R3, =LONG_DELAY_CNT   @ Load address of the constant
     	LDR R3, [R3]              @ Load actual value into R3
+    	LDR R5, [R0, #0X10]       @ Load IDR
+    	ANDS R6, R5, #1
+    	BEQ  pa0_pressed
+    	ANDS R6, R5, #2
+    	ANDS R6, R5, #4
+    	ANDS R6, R5, #8
 
 long_delay:
     SUBS R3, R3, #1           @ R3 = R3 - 1, updates flags
@@ -50,10 +100,10 @@ short_delay:
 
 write_leds:
 	ADDS R2, R2, #1
-	MOVS R4, #0xFF      @ Load mask into R3
+	MOVS R4, #0xFF         @ Load mask into R3
 	ANDS R2, R2, R4        @ keep only PB0..PB7 by using the 0xFF mask instead of incrementing through out the whole width of ODR
 	STR R2, [R1, #0x14]
-	B main_loop
+	B main_loop*/
 
 
 @ LITERALS; DO NOT EDIT
