@@ -96,9 +96,11 @@ pa01_pressed:
 	B 		short_delay
 
 pa2_pressed:
+	MOVS	R2, #0xAA
+	B		write_leds
 
 pa3_pressed:
-
+	B 		main_loop
 
 
 /*main_loop:
@@ -138,5 +140,5 @@ GPIOB_BASE:  		.word 0x48000400
 MODER_OUTPUT: 		.word 0x5555
 
 @ TODO: Add your own values for these delays
-LONG_DELAY_CNT: 	.word 1500000
-SHORT_DELAY_CNT: 	.word 642857
+LONG_DELAY_CNT: 	.word 1400000
+SHORT_DELAY_CNT: 	.word 592857
