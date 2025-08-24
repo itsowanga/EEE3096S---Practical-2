@@ -100,36 +100,7 @@ pa2_pressed:
 	B		write_leds
 
 pa3_pressed:
-	B 		main_loop
-
-
-/*main_loop:
-		LDR R3, =LONG_DELAY_CNT   @ Load address of the constant
-    	LDR R3, [R3]              @ Load actual value into R3
-    	LDR R5, [R0, #0X10]       @ Load IDR
-    	ANDS R6, R5, #1
-    	BEQ  pa0_pressed
-    	ANDS R6, R5, #2
-    	ANDS R6, R5, #4
-    	ANDS R6, R5, #8
-
-long_delay:
-    SUBS R3, R3, #1           @ R3 = R3 - 1, updates flags
-    BNE long_delay            @ If not zero, keep looping
-    B   write_leds             @ When zero, go write LEDs
-
-short_delay:
-    SUBS R3, R3, #1           @ R3 = R3 - 1, updates flags
-    BNE short_delay            @ If not zero, keep looping
-    B   write_leds             @ When zero, go write LEDs
-
-write_leds:
-	ADDS R2, R2, #1
-	MOVS R4, #0xFF         @ Load mask into R3
-	ANDS R2, R2, R4        @ keep only PB0..PB7 by using the 0xFF mask instead of incrementing through out the whole width of ODR
-	STR R2, [R1, #0x14]
-	B main_loop*/
-
+	B 		main_loop				@ Freeze
 
 @ LITERALS; DO NOT EDIT
 	.align
