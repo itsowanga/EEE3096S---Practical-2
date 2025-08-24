@@ -69,6 +69,10 @@ write_leds:
 	B 		main_loop
 
 pa0_pressed:
+	ADDS 	R2, R2, #2				@ Increment the pattern
+	LDR 	R4, =LONG_DELAY_CNT   	@ Load address of the constant
+    LDR 	R4, [R4]              	@ Load actual value into R3
+	B 		long_delay
 
 pa1_pressed:
 
